@@ -9,10 +9,10 @@ const ACCENTS: Record<Platform["accent"], string> = {
 
 interface PlatformCardProps {
   platform: Platform;
-  connected?: boolean;
-  connectedAt?: string;
-  action?: React.ReactNode;
-  delay?: number;
+  connected?: boolean | undefined;
+  connectedAt?: string | undefined;
+  action?: React.ReactNode | undefined;
+  delay?: number | undefined;
 }
 
 export function PlatformCard({
