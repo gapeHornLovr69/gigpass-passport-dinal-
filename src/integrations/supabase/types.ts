@@ -14,7 +14,264 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      credentials: {
+        Row: {
+          algorithm: string
+          created_at: string
+          credential_id: string
+          expires_at: string
+          id: string
+          issued_at: string
+          payload: Json
+          revoked: boolean
+          signature: string
+          updated_at: string
+          worker_id: string
+        }
+        Insert: {
+          algorithm?: string
+          created_at?: string
+          credential_id: string
+          expires_at?: string
+          id?: string
+          issued_at?: string
+          payload: Json
+          revoked?: boolean
+          signature: string
+          updated_at?: string
+          worker_id: string
+        }
+        Update: {
+          algorithm?: string
+          created_at?: string
+          credential_id?: string
+          expires_at?: string
+          id?: string
+          issued_at?: string
+          payload?: Json
+          revoked?: boolean
+          signature?: string
+          updated_at?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credentials_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      performance_records: {
+        Row: {
+          acceptance_rate: number
+          completion_rate: number
+          connection_id: string | null
+          created_at: string
+          id: string
+          is_simulated: boolean
+          jobs_completed: number
+          on_time_rate: number
+          platform_id: string
+          rating: number
+          synced_at: string
+          tenure_months: number
+          updated_at: string
+          worker_id: string
+        }
+        Insert: {
+          acceptance_rate?: number
+          completion_rate?: number
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          is_simulated?: boolean
+          jobs_completed?: number
+          on_time_rate?: number
+          platform_id: string
+          rating?: number
+          synced_at?: string
+          tenure_months?: number
+          updated_at?: string
+          worker_id: string
+        }
+        Update: {
+          acceptance_rate?: number
+          completion_rate?: number
+          connection_id?: string | null
+          created_at?: string
+          id?: string
+          is_simulated?: boolean
+          jobs_completed?: number
+          on_time_rate?: number
+          platform_id?: string
+          rating?: number
+          synced_at?: string
+          tenure_months?: number
+          updated_at?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "performance_records_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "platform_connections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "performance_records_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "platforms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "performance_records_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_connections: {
+        Row: {
+          consent_share_rating: boolean
+          consent_share_reliability: boolean
+          consent_share_volume: boolean
+          consented_at: string
+          created_at: string
+          id: string
+          platform_id: string
+          status: string
+          updated_at: string
+          worker_id: string
+        }
+        Insert: {
+          consent_share_rating?: boolean
+          consent_share_reliability?: boolean
+          consent_share_volume?: boolean
+          consented_at?: string
+          created_at?: string
+          id?: string
+          platform_id: string
+          status?: string
+          updated_at?: string
+          worker_id: string
+        }
+        Update: {
+          consent_share_rating?: boolean
+          consent_share_reliability?: boolean
+          consent_share_volume?: boolean
+          consented_at?: string
+          created_at?: string
+          id?: string
+          platform_id?: string
+          status?: string
+          updated_at?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_connections_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "platforms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_connections_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platforms: {
+        Row: {
+          accent: string
+          blurb: string
+          category: string
+          created_at: string
+          id: string
+          is_simulated: boolean
+          name: string
+          seed_acceptance_rate: number
+          seed_completion_rate: number
+          seed_jobs: number
+          seed_on_time_rate: number
+          seed_rating: number
+          seed_tenure_months: number
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          accent?: string
+          blurb?: string
+          category: string
+          created_at?: string
+          id?: string
+          is_simulated?: boolean
+          name: string
+          seed_acceptance_rate?: number
+          seed_completion_rate?: number
+          seed_jobs?: number
+          seed_on_time_rate?: number
+          seed_rating?: number
+          seed_tenure_months?: number
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          accent?: string
+          blurb?: string
+          category?: string
+          created_at?: string
+          id?: string
+          is_simulated?: boolean
+          name?: string
+          seed_acceptance_rate?: number
+          seed_completion_rate?: number
+          seed_jobs?: number
+          seed_on_time_rate?: number
+          seed_rating?: number
+          seed_tenure_months?: number
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      workers: {
+        Row: {
+          city: string
+          created_at: string
+          display_name: string
+          handle: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          city?: string
+          created_at?: string
+          display_name?: string
+          handle?: string
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          display_name?: string
+          handle?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
