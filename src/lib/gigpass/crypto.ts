@@ -25,9 +25,9 @@ function bytesToBase64(bytes: Uint8Array): string {
   return btoa(binary);
 }
 
-function base64ToBytes(b64: string): Uint8Array {
+function base64ToBytes(b64: string): Uint8Array<ArrayBuffer> {
   const binary = atob(b64);
-  const out = new Uint8Array(binary.length);
+  const out = new Uint8Array(new ArrayBuffer(binary.length));
   for (let i = 0; i < binary.length; i++) out[i] = binary.charCodeAt(i);
   return out;
 }
@@ -63,7 +63,7 @@ export async function signPayload(
   privateKeyJwk: JsonWebKey,
 ): Promise<string> {
   const key = await crypto.subtle.importKey("jwk", privateKeyJwk, ALGO, false, ["sign"]);
-  const data = new TextEncoder().encode(canonicalize(payload));
+  const data = new Uint8Array(new TextEncoder().encode(canonicalize(payload)));
   const sig = await crypto.subtle.sign(SIGN_PARAMS, key, data);
   return bytesToBase64(new Uint8Array(sig));
 }
@@ -74,13 +74,13 @@ export async function verifyPayload(
   publicKeyJwk: JsonWebKey,
 ): Promise<boolean> {
   const key = await crypto.subtle.importKey("jwk", publicKeyJwk, ALGO, false, ["verify"]);
-  const data = new TextEncoder().encode(canonicalize(payload));
+  const data = new Uint8Array(new TextEncoder().encode(canonicalize(payload)));
   return crypto.subtle.verify(SIGN_PARAMS, key, base64ToBytes(signatureB64), data);
 }
 
 /** Short human-readable fingerprint of a public key. */
 export async function keyFingerprint(publicKeyJwk: JsonWebKey): Promise<string> {
-  const data = new TextEncoder().encode(canonicalize(publicKeyJwk as unknown as JsonValue));
+  const data = new Uint8Array(new TextEncoder().encode(canonicalize(publicKeyJwk as unknown as JsonValue)));
   const digest = await crypto.subtle.digest("SHA-256", data);
   return Array.from(new Uint8Array(digest))
     .slice(0, 8)
